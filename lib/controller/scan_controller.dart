@@ -1,5 +1,4 @@
 import 'dart:math';
-
 import 'package:camera/camera.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_tflite/flutter_tflite.dart';
@@ -28,6 +27,9 @@ class ScanController extends GetxController {
 
   var cameraCount = 0;
   var isCameraInitialized = false.obs;
+
+  var x,y,w,h = 0.0;
+  var label = "";
 
   initCamera() async {
     if (await Permission.camera.request().isGranted) {
@@ -82,8 +84,18 @@ class ScanController extends GetxController {
       threshold: 0.4,
     );
     if (detections != null && detections.isNotEmpty) {
-      debugPrint(detections.first.toString());
+      var ourDetectedObject = detections.first;
+      if(ourDetectedObject["confidenceInClass"]*100 > 45){
+        label = detections.first['detectedClass'].tostring();
+        h = ourDetectedObject['rect']['h'];
+        w = ourDetectedObject['rect']['w'];
+        x = ourDetectedObject['rect']['x'];
+        y = ourDetectedObject['rect']['y'];
+      }
+      update();
     }
   }
+
+
 
 }
