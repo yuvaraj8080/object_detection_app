@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:camera/camera.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_tflite/flutter_tflite.dart';
 import 'package:get/get.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -66,13 +67,12 @@ class ScanController extends GetxController {
   }
 
 
-  ///CREATING A OBJECTOR METHOD
+  /// CREATING A OBJECT DETECTOR METHOD
   objectDetector(CameraImage image) async {
-    var detector = await Tflite.runModelOnFrame(
+    var detections = await Tflite.runModelOnFrame(
       bytesList: image.planes.map((e) {
         return e.bytes;
       }).toList(),
-      asynch: true,
       imageHeight: image.height,
       imageWidth: image.width,
       imageMean: 127.5,
@@ -81,8 +81,9 @@ class ScanController extends GetxController {
       rotation: 90,
       threshold: 0.4,
     );
-    if(detector != null){
-      log("Result is $detector" as num);
+    if (detections != null && detections.isNotEmpty) {
+      debugPrint(detections.first.toString());
     }
   }
+
 }
