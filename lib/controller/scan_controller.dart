@@ -3,6 +3,23 @@ import 'package:get/get.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class ScanController extends GetxController{
+
+
+  @override
+  void onInit() {
+    // TODO: implement onInit
+    super.onInit();
+    initCamera();
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    cameraController.dispose();
+  }
+
+
   late CameraController cameraController;
   late List<CameraDescription> cameras;
 
@@ -18,6 +35,7 @@ class ScanController extends GetxController{
       );
       await cameraController.initialize();
       isCameraInitialized(true);
+      update();
     }else{
       Get.snackbar("Permission Denied","");
     }
