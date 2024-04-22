@@ -17,7 +17,6 @@ class CameraView extends StatelessWidget {
               ? CameraPreview(controller.cameraController)
               : const Center(child:Text("Loading Preview")
           );
-
         }
       )
     );
